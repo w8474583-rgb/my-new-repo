@@ -1,1 +1,1 @@
-# AudioSync Core
+# Music Sync Core
