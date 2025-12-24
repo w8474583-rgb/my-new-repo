@@ -11,4 +11,3 @@ jobs:
         run: |
           URL="https://cautious-fortnight-69q976vp5x4jcrxj9-2212.app.github.dev"
           curl -s -u "Anon@wattserver:your_password_here" $URL > /dev/null
-          echo "Gunicorn workers poked at $(date)"
