@@ -3,13 +3,12 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
-
 jobs:
   keep_alive:
     runs-on: ubuntu-latest
     steps:
-      - name: Poke Carrier Dashboard
+      - name: Poke Anon@wattserver
         run: |
           URL="https://cautious-fortnight-69q976vp5x4jcrxj9-2212.app.github.dev"
-          curl -s $URL > /dev/null
-          echo "Dashboard poked at $(date)"
+          curl -s -u "Anon@wattserver:your_password_here" $URL > /dev/null
+          echo "Gunicorn workers poked at $(date)"
