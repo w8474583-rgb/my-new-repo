@@ -1,0 +1,15 @@
+name: Immortal Heartbeat
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  keep_alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Poke Carrier Dashboard
+        run: |
+          URL="https://cautious-fortnight-69q976vp5x4jcrxj9-2212.app.github.dev"
+          curl -s $URL > /dev/null
+          echo "Dashboard poked at $(date)"
