@@ -1,0 +1,39 @@
+name: Sync Atlas Global to Repo
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Rclone
+        run: sudo apt-get install -y rclone
+
+      - name: Setup Rclone Config
+        run: |
+          mkdir -p ~/.config/rclone
+          echo "${{ secrets.RCLONE_CONFIG_DATA }}" | base64 -d > ~/.config/rclone/rclone.conf
+
+      - name: Sync Small Files (Under 50MB)
+        run: |
+          mkdir -p ATLAS_DATA
+          # --max-size 50M prevents large files from breaking the repo
+          # --exclude prevents system/temp files from being moved
+          rclone sync atlas_global: ./ATLAS_DATA \
+            --max-size 50M \
+            --exclude "kali-arm64/**" \
+            --exclude ".git/**" \
+            --verbose
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "Atlas-Bot"
+          git config --global user.email "bot@atlas.global"
+          git add .
+          git commit -m "Automated Sync: Moved small files to Repo" || exit 0
+          git push
